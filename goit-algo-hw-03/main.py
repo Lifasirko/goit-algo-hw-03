@@ -1,6 +1,6 @@
 import re
 from datetime import datetime, timedelta
-from random import sample
+from random import sample, random
 
 
 # Press Shift+F10 to execute it or replace it with your code.
@@ -21,7 +21,7 @@ def print_hi():
                          f'Введіть мінімальне можливе число у наборі(не менше 1)'))
         maxi = int(input(f'Введіть максимальне можливе число у наборі (не більше 1000)'))
         quantity = int(input(f'Введіть кількість чисел, які потрібно вибрати (значення між min і max)'))
-        get_numbers_ticket(mini, maxi, quantity)
+        print(get_numbers_ticket(mini, maxi, quantity))
     elif choose == 3:
         phone_number = input(f'Ви обрали третє завдання, '
                              f'яке автоматично нормалізує номери телефонів до потрібного формату, '
@@ -36,15 +36,17 @@ def print_hi():
         get_upcoming_birthdays(users)
 
 
+# __________________________________________________ Перше завдання __________________________________________________ #
+
 def get_days_from_today(date_str):
     try:
-    # Перетворення рядка дати в об'єкт datetime
+        # Перетворення рядка дати в об'єкт datetime
         date_provided = datetime.strptime(date_str, '%Y-%m-%d').date()
-    # Отримання поточної дати
+        # Отримання поточної дати
         current_date = datetime.today().date()
-    # current_date = datetime(2021, 5, 5)
-    # Розрахунок різниці у днях
-        difference = (date_provided - current_date).days
+        # current_date = datetime(2021, 5, 5)
+        # Розрахунок різниці у днях
+        difference = (current_date - date_provided).days
         print("Різниця складає - ")
         print(difference)
         return difference
@@ -52,33 +54,35 @@ def get_days_from_today(date_str):
         print("Ви ввели неправильну дату. Або такого дня в місяці не існує або не по шаблону")
 
 
+# ___________________________________________________Друге завдання___________________________________________________ #
+
+
 def get_numbers_ticket(mini, maxi, quantity):
-    if mini >= 1 and maxi <= 1000 and mini < quantity < maxi:
-        sor = sorted(sample(range(mini, maxi + 1), quantity))
-        print("Ось ваші числа:")
-        print(sor)
-        return sor
-
-    else:
+    if mini < 1 or maxi > 1000 or quantity < 1 or quantity > (maxi - mini + 1):
         return []
+    return sorted(sample(range(mini, maxi + 1), quantity))
 
+
+# __________________________________________________ Третє завдання __________________________________________________ #
 
 def normalize_phone(phone_number):
     # Видалення всіх символів, крім цифр і '+'
     sanitized = re.sub(r'[^\d+]', '', phone_number).strip()
     # Перевірка наявності міжнародного коду і корекція
-    if len(sanitized) > 13 or len(sanitized) < 10:
-        print('Invalid phone number')
-        return 'Invalid phone number'
-    else:
-        if not sanitized.startswith('+'):
-            if sanitized.startswith('380'):
-                sanitized = '+' + sanitized
-            else:
-                sanitized = '+38' + sanitized
-        print(sanitized)
-        return sanitized
+    # if len(sanitized) > 13 or len(sanitized) < 10:
+    #     print('Invalid phone number')
+    #     return 'Invalid phone number'
+    # else:
+    if not sanitized.startswith('+'):
+        if sanitized.startswith('380'):
+            sanitized = '+' + sanitized
+        else:
+            sanitized = '+38' + sanitized
+    print(sanitized)
+    return sanitized
 
+
+# ________________________________________________ Четверте завдання ________________________________________________ #
 
 users = [
     {"name": "John Doe", "birthday": "1985.01.23"},
